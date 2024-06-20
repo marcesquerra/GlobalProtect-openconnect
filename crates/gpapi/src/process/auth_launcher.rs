@@ -90,7 +90,8 @@ impl<'a> SamlAuthLauncher<'a> {
 
   /// Launch the authenticator binary as the current user or SUDO_USER if available.
   pub async fn launch(self) -> anyhow::Result<Option<Credential>> {
-    let mut auth_cmd = Command::new(GP_AUTH_BINARY);
+    let gp_auth_binary: String = std::env::var("GP_AUTH_BINARY").unwrap_or(GP_AUTH_BINARY.to_string());
+    let mut auth_cmd = Command::new(&gp_auth_binary);
     auth_cmd.arg(self.server);
 
     if self.gateway {
